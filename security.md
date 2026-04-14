@@ -9,9 +9,7 @@
 **Why this is being introduced.** Manager asked us to shift code-quality, architecture, and security review *left* — to the moment code first lands in `dev`, instead of accumulating debt that gets fixed in big-bang remediation passes later. The mechanism is three Claude Code "expert" personas that always run when code is being written and again as a final gate before any merge to `dev` or `main`:
 
 - **Refactoring engineer** — catches code smells, deduplication opportunities, dead code, and over-engineering before they enter `dev`.
-
 - **Software architect** — reviews module boundaries, layering, coupling, and design decisions on the same merge.
-
 - **Security engineer** — runs an OWASP / authn-authz / secrets / dependency-CVE pass.
 
 **Outcome.** Every meaningful change to code triggers a lightweight nudge; every merge into `dev` or `main` triggers a full three-role review. No human discipline required — Claude Code's hook system runs this deterministically.
@@ -89,13 +87,9 @@ Two new hooks added to `~/.claude/settings.json`. Both are **non-blocking** — 
 ### 4a. `PreToolUse` on `Bash` — full three-role review on merge to dev/main
 
 - **Event:** `PreToolUse`
-
 - **Matcher:** `Bash`
-
 - *`if`:** `Bash(git merge )` *OR* `Bash(git push )` (two entries — Claude Code's `if` field, v2.1.85+, takes a single permission-rule pattern per entry)
-
 - **Script:** `~/.claude/hooks/merge-review-nudge.sh`
-
 - **What the script does:** reads stdin JSON, parses `tool_input.command`, checks whether the target branch is `dev` or `main` (or `master`). If yes, prints the JSON below and exits 0. If no (e.g., `git merge feature/foo`), prints `{}` and exits 0 (no-op).
 
 ```json
@@ -119,11 +113,8 @@ Two new hooks added to `~/.claude/settings.json`. Both are **non-blocking** — 
 ### 4b. `PostToolUse` on `Edit|Write|MultiEdit` — lightweight per-edit nudge
 
 - **Event:** `PostToolUse`
-
 - **Matcher:** `Edit|Write|MultiEdit`
-
 - **Script:** `~/.claude/hooks/edit-refactor-nudge.sh`
-
 - **What the script does:** uses a per-session marker file `/tmp/claude-refactor-nudge-${session_id}`) to ensure the nudge fires **at most once per N edits** (default: every 10th edit), not after every single keystroke. Keeps context-window pressure low. On firing, prints:
 
 ```json
@@ -483,13 +474,9 @@ Hooks are re-read on session start. After installation, `claude` (new session) �
 ## 8. Reproducing on another machine (TL;DR for the team)
 
 1. Install Claude Code v2.1.85+ (the `if` hook field is required).
-
 2. Have an `~/.ai_configs/` layout symlinked into `~/.claude/skills` and `~/.claude/agents` (or just put files directly under `~/.claude/skills` and `~/.claude/agents`).
-
 3. Run sections §6 step 1 → step 5 verbatim.
-
 4. Run the §7 verification checklist.
-
 5. The three new tools and two hooks are now active.
 
 That is the entire delta.
@@ -501,15 +488,10 @@ That is the entire delta.
 **Created:**
 
 - `~/.ai_configs/agents/refactoring-specialist.md`
-
 - `~/.ai_configs/agents/architect-reviewer.md`
-
 - `~/.ai_configs/skills/security-engineer/SKILL.md` (and Trail of Bits sub-skill files)
-
 - `~/.claude/hooks/merge-review-nudge.sh`
-
 - `~/.claude/hooks/edit-refactor-nudge.sh`
-
 - `~/.ai_configs/_archive/2026-04-13-prereplace/` (archive directory)
 
 **Modified (additive only):**
@@ -519,19 +501,14 @@ That is the entire delta.
 **Moved (not deleted):**
 
 - `~/.ai_configs/agents/architect.md` → `_archive/2026-04-13-prereplace/`
-
 - `~/.ai_configs/agents/security-expert.md` → `_archive/2026-04-13-prereplace/`
-
 - `~/.ai_configs/skills/security-review/` → `_archive/2026-04-13-prereplace/`
 
 **Untouched:**
 
 - All other 27 skills and 13 agents
-
 - All 7 existing hooks
-
 - `~/.claude/CLAUDE.md` symlink and `~/.ai_configs/rules/AGENTS.md`
-
 - `~/.claude/plugins/` (Vercel plugin stays)
 
 ---
@@ -559,30 +536,25 @@ This section defines repository-level secure coding practices for the GST mobile
 ### 10.3 Mandatory Coding Rules
 
 1. **Validate all user input at boundary**
-   - Sanitize text and numeric fields before computation.
-   - Clamp numeric ranges (`GST rate 0..100`, amount upper bounds).
-   - Reject/normalize malformed state codes.
-
+  - Sanitize text and numeric fields before computation.
+  - Clamp numeric ranges (`GST rate 0..100`, amount upper bounds).
+  - Reject/normalize malformed state codes.
 2. **No secrets in repo**
-   - Never commit API keys, tokens, signing files, passwords, or private certs.
-   - Use environment variables and CI secret stores only.
-
+  - Never commit API keys, tokens, signing files, passwords, or private certs.
+  - Use environment variables and CI secret stores only.
 3. **Safe logging**
-   - No logging of invoice/customer PII in production.
-   - Remove debug-only console statements before release builds.
-
+  - No logging of invoice/customer PII in production.
+  - Remove debug-only console statements before release builds.
 4. **Least privilege**
-   - Request only required mobile permissions.
-   - Do not include ad/analytics SDKs without explicit privacy form updates.
-
+  - Request only required mobile permissions.
+  - Do not include ad/analytics SDKs without explicit privacy form updates.
 5. **Secure external linking**
-   - Allowlist legal/support URLs.
-   - Use HTTPS URLs for external web pages.
-
+  - Allowlist legal/support URLs.
+  - Use HTTPS URLs for external web pages.
 6. **Dependency hygiene**
-   - Run `npm audit` on release branches.
-   - Patch critical/high vulnerabilities before store submission.
-   - Pin and review new dependencies with purpose and risk note.
+  - Run `npm audit` on release branches.
+  - Patch critical/high vulnerabilities before store submission.
+  - Pin and review new dependencies with purpose and risk note.
 
 ### 10.4 Mobile-Specific Controls
 
@@ -597,12 +569,12 @@ This section defines repository-level secure coding practices for the GST mobile
 
 Before each production build:
 
-- [ ] Replace placeholder privacy/support URLs with live endpoints.
-- [ ] Verify no secrets in staged diff (`.env`, keys, keystores).
-- [ ] Run typecheck and lint clean.
-- [ ] Run dependency vulnerability check and document results.
-- [ ] Confirm data collection declarations match enabled SDKs.
-- [ ] Confirm no debug logs and no test endpoints in production.
+- Replace placeholder privacy/support URLs with live endpoints.
+- Verify no secrets in staged diff (`.env`, keys, keystores).
+- Run typecheck and lint clean.
+- Run dependency vulnerability check and document results.
+- Confirm data collection declarations match enabled SDKs.
+- Confirm no debug logs and no test endpoints in production.
 
 ### 10.6 Secure Code Review Gate (PR/Merge)
 
