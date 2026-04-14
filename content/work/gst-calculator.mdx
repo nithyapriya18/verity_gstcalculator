@@ -1,0 +1,43 @@
+---
+title: "GST Calculator for Indian businesses"
+date: "2026-04-14"
+excerpt: "A login-gated GST utility app with forward/reverse tax calculation and itemized bill totals."
+problem: "Daily tax calculation friction"
+outcome: "Faster GST breakdowns and instant invoice totals"
+metric: "18% in 1 tap"
+tags: ["Utility app", "Finance", "India"]
+beforeText: "People switch between spreadsheets and calculators to split CGST/SGST vs IGST, especially while creating quick quotes."
+afterText: "A single web app handles forward + reverse GST and itemized bill totals, with a login-gated live version."
+---
+
+## The problem
+
+Small businesses in India regularly need quick GST math:
+
+- Tax-exclusive to final amount
+- Tax-inclusive back to taxable value
+- CGST + SGST for intra-state, IGST for inter-state
+
+Most teams still do this with ad-hoc calculators or spreadsheet formulas, which slows down billing and increases errors.
+
+## What I built
+
+I shipped a web-based GST Calculator with:
+
+- Forward calculation (exclusive and inclusive flows)
+- Reverse calculation from inclusive total or GST amount
+- State-based supply type logic (intra vs inter)
+- Itemized bill generator with live totals
+- Copyable invoice summary text
+
+To keep the live version private while this portfolio is in progress, I added a simple password gate before users can access the web app.
+
+## Result
+
+The app now gives an immediate, clean breakdown of taxable value, GST components, and grand total.  
+It also serves as the first production-grade project in this portfolio's `Work` section.
+
+## Live app
+
+[Open GST Calculator](/gst-calculator)
+

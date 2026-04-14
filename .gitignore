@@ -1,0 +1,11 @@
+.vercel
+.next
+.DS_Store
+.claude
+node_modules
+apps/gst-mobile/node_modules
+apps/gst-mobile/.expo
+apps/gst-mobile/dist
+apps/gst-mobile/web-build
+*.log
+*.tsbuildinfo
