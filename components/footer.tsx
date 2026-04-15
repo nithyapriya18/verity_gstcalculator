@@ -24,7 +24,13 @@ export function Footer() {
           </p>
 
           {/* Right: links */}
-          <div className="flex items-center gap-5 text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
+            <Link href="/privacy" className="text-text-muted hover:text-accent transition-colors">
+              Privacy
+            </Link>
+            <Link href="/support" className="text-text-muted hover:text-accent transition-colors">
+              Support
+            </Link>
             <a
               href={siteConfig.linkedin}
               target="_blank"
