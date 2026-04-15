@@ -1,9 +1,9 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const params = useSearchParams()
   const nextPath = params.get('next') || '/gst-calculator'
@@ -74,6 +74,20 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="bg-background min-h-[calc(100vh-4rem)] py-16 md:py-20 flex items-center justify-center">
+          <p className="text-text-muted text-sm">Loading…</p>
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   )
 }
 
