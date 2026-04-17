@@ -15,6 +15,8 @@ export type InvoiceItemInput = {
   description: string
   quantity: number
   unitRate: number
+  /** Per-line GST slab % (same math as calculator; supply type still from states). */
+  gstRatePercent: number
 }
 
 export type InvoiceItemComputed = InvoiceItemInput & {
@@ -117,15 +119,15 @@ export function computeFromGstAmount(args: {
 
 export function computeInvoiceItem(args: {
   item: InvoiceItemInput
-  gstRatePercent: number
   supplyType: SupplyType
 }): InvoiceItemComputed {
   const quantity = clampNonNegative(args.item.quantity)
   const unitRate = clampNonNegative(args.item.unitRate)
   const taxableValue = quantity * unitRate
+  const gstRatePercent = clampNonNegative(args.item.gstRatePercent)
   const breakdown = computeFromTaxableValue({
     taxableValue,
-    gstRatePercent: args.gstRatePercent,
+    gstRatePercent,
     supplyType: args.supplyType,
   })
 
@@ -133,6 +135,7 @@ export function computeInvoiceItem(args: {
     description: args.item.description,
     quantity: roundMoney(quantity),
     unitRate: roundMoney(unitRate),
+    gstRatePercent,
     taxableValue: breakdown.taxableValue,
     cgst: breakdown.cgst,
     sgst: breakdown.sgst,
